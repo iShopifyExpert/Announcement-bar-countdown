@@ -1,0 +1,9 @@
+
+  "layout": {
+    "countdown": {
+      "day": "Days",
+      "time": "Time",
+      "minute": "Min",
+      "second": "Sec"
+    }
+  },

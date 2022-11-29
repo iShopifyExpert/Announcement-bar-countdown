@@ -1,0 +1,59 @@
+<div class="section-countdown">
+  <div class="section-countdown-box">
+    <span class="section-countdown-discount">{{ section.settings.title }}</span>
+    <span class="section-countdown-label">{{ section.settings.subtitle }}</span>
+  </div>
+  <div class="section-countdown-box">
+    <div class="deals-countdown" data-time="{{ section.settings.date }}"></div>
+  </div>
+  <div class="section-countdown-exit">
+    <svg width="12" height="12" fill="none"><path d="m7.414 6 4.293-4.293A.999.999 0 1 0 10.293.293L6 4.586 1.707.293A.999.999 0 1 0 .293 1.707L4.586 6 .293 10.293a.999.999 0 1 0 1.414 1.414L6 7.414l4.293 4.293a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414L7.414 6Z" fill="#ffffff"></path></svg>
+  </div>
+</div>
+<style>#countdown, .center {text-align: center;}.padding-bottom {padding-bottom: 90px;}.margin-bottom {margin-bottom: 15px;}.is-countdown {border: 1px solid #ccc;background-color: #eee;}.countdown-rtl {direction: rtl;}.countdown-holding span {color: #888;}.countdown-row {clear: both;width: 100%;text-align: center;}.countdown-show1 .countdown-section {width: 100%;}.countdown-show2 .countdown-section {width: 48%;}.countdown-show3 .countdown-section {width: 33%;}.countdown-show4 .countdown-section {width: 25%;}.countdown-show5 .countdown-section {width: 20%;}.countdown-show6 .countdown-section {width: 16.25%;}.countdown-show7 .countdown-section {width: 14%;}.countdown-section {display: block;float: left;font-size: 75%;text-align: center;border: 1px solid #5a5555;}.countdown-amount {font-size: 200%;}.countdown-period {display: block;background: #fff;color: #000;}.countdown-descr {display: block;width: 100%;}span.center {text-align: center;}.deals-description {font-size: 10px;font-weight: 400;text-align: center;text-transform: capitalize;}
+  .section-countdown {position: relative;background: {{section.settings.bg_color}};display: flex;width: 100%;flex-wrap: nowrap;align-items: center;justify-content: center;padding: 10px 0;column-gap: 5px;row-gap: 10px;color: {{section.settings.text_color}};}
+  .section-countdown-box {display: block;min-width: 180px;}.section-countdown-box span.section-countdown-discount, .section-countdown-box span.section-countdown-label {display: block;text-align: center;}span.section-countdown-discount {font-size: 18px;font-weight: 600;}span.section-countdown-label {font-size: 11px;}.section-countdown-exit {position: absolute;right: 15px;cursor:pointer;}</style>
+{{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+{{ '//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js' | script_tag }}
+{{ 'countdown.js' | asset_url | script_tag }}
+{% schema %}
+{
+  "name": "Custom Countdown",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Bg Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "SPAR 30% PÅ ALT"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Text",
+      "default": "BLACK DAYS SLUTTER OM:"
+    },
+    {
+      "type": "text",
+      "id": "date",
+      "label": "Date",
+      "default": "2022/12/5 01:21:20",
+      "info": "Format: Y/M/D H:M:S"
+    }
+  ],
+  "presets": [{
+    "name": "Custom Countdown"
+  }]
+}
+{% endschema %}

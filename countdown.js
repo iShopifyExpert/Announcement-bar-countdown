@@ -1,0 +1,90 @@
+/* http://www.codehouse.pk/custom-countdown.html
+   Countdown for jQuery v1.0.0.
+   Written by Aaliyan Gul (sales{at}codehouse.pk) January 2016.
+   Available under the MIT (https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt) license. 
+   Please attribute the author if you use it. */
+(function($){
+	
+	$.fn.PBR_CountDown = function( options ) {
+	 	return this.each(function() { 
+			// get instance of the PBR_CountDown.
+			new  $.PBR_CountDown( this, options ); 
+		});
+ 	 }
+	$.PBR_CountDown = function( obj, options ){
+		
+		this.options = $.extend({
+				autoStart			: true,
+				LeadingZero:true,
+				DisplayFormat:"<div>%%D%% Days</div><div>%%H%% Hours</div><div>%%M%% Minutes</div><div>%%S%% Seconds</div>",
+				FinishMessage:"Expired",
+				CountActive:true,
+				TargetDate:null
+		}, options || {} );
+		if( this.options.TargetDate == null || this.options.TargetDate == '' ){
+			return ;
+		}
+		this.timer  = null;
+		this.element = obj;
+		this.CountStepper = -1;
+		this.CountStepper = Math.ceil(this.CountStepper);
+		this.SetTimeOutPeriod = (Math.abs(this.CountStepper)-1)*1000 + 990;
+		var dthen = new Date(this.options.TargetDate);
+		var dnow = new Date();
+		if( this.CountStepper > 0 ) {
+			ddiff = new Date(dnow-dthen);
+		}
+		else {
+			 ddiff = new Date(dthen-dnow);
+		}
+		gsecs = Math.floor(ddiff.valueOf()/1000); 
+		this.CountBack(gsecs, this);
+
+	};
+	 $.PBR_CountDown.fn =  $.PBR_CountDown.prototype;
+     $.PBR_CountDown.fn.extend =  $.PBR_CountDown.extend = $.extend;
+	 $.PBR_CountDown.fn.extend({
+		calculateDate:function( secs, num1, num2 ){
+			  var s = ((Math.floor(secs/num1))%num2).toString();
+			  if ( this.options.LeadingZero && s.length < 2) {
+					s = "0" + s;
+			  }
+			  return "<b>" + s + "</b>";
+		},
+		CountBack:function( secs, self ){
+			 if (secs < 0) {
+				self.element.innerHTML = self.options.FinishMessage;
+				return;
+			  }
+			  clearInterval(self.timer);
+			  DisplayStr = self.options.DisplayFormat.replace(/%%D%%/g, self.calculateDate( secs,86400,100000) );
+			  DisplayStr = DisplayStr.replace(/%%H%%/g, self.calculateDate(secs,3600,24));
+			  DisplayStr = DisplayStr.replace(/%%M%%/g, self.calculateDate(secs,60,60));
+			  DisplayStr = DisplayStr.replace(/%%S%%/g, self.calculateDate(secs,1,60));
+			  self.element.innerHTML = DisplayStr;
+			  if (self.options.CountActive) {
+				   self.timer = null;
+				 self.timer =  setTimeout( function(){
+					self.CountBack((secs+self.CountStepper),self);			
+				},( self.SetTimeOutPeriod ) );
+			 }
+		}
+					
+	});
+
+	$(document).ready(function(){
+		$('.deals-countdown').each(function(index, el) {
+            var $this = $(this);
+            var $date = $this.data('time');
+            $this.PBR_CountDown({
+                TargetDate:$date,
+                DisplayFormat:"<span class=\'countdown-row countdown-show4\'><span class=\'countdown-section\'><span class=\'countdown-amount\'>%%D%%</span><span class=\'countdown-period\'>Dage</span></span><span class=\'countdown-section\'><span class=\'countdown-amount\'>%%H%%</span><span class=\'countdown-period\'>Timer</span></span><span class=\'countdown-section\'><span class=\'countdown-amount\'>%%M%%</span><span class=\'countdown-period\'>Min</span></span><span class=\'countdown-section\'><span class=\'countdown-amount\'>%%S%%</span><span class=\'countdown-period\'>Sek</span></span></span>",
+                FinishMessage: "<span class=\'countdown-row countdown-show4\'><span class=\'countdown-section\'><span class=\'countdown-amount\'>0</span><span class=\'countdown-period\'>Dage</span></span><span class=\'countdown-section\'><span class=\'countdown-amount\'>00</span><span class=\'countdown-period\'>Timer</span></span><span class=\'countdown-section\'><span class=\'countdown-amount\'>00</span><span class=\'countdown-period\'>Min</span></span><span class=\'countdown-section\'><span class=\'countdown-amount\'>00</span><span class=\'countdown-period\'>Sek</span></span></span>"
+            });
+        });
+        $(document).on('click','.section-countdown-exit', function() {
+           $('#shopify-section-expert-code').slideUp();
+        });
+	});
+
+})(jQuery)
